@@ -1,62 +1,90 @@
-# Ipli
+# IPL Interpreter (IPLI)
 
-/*README IPLI*/
+Interpreter implementation for the **IPL programming language**, developed as part of an academic assignment.
 
-ΦΟΙΤΗΤΕΣ ΠΟΥ ΥΛΟΠΟΙΗΣΑΝ ΤΗΝ ΕΡΓΑΣΙΑ
+---
 
-ΡΟΥΣΣΟΣ ΒΑΣΙΛΕΙΟΣ
-ΟΡΦΑΝΑΚΟΥ ΦΟΙΒΗ
+## Authors
+- **Vasileios Roussos**
+- **Phoebe Orfanakou**
 
+---
 
-ΠΕΡΙΓΡΑΦΗ ΠΡΟΓΡΑΜΜΑΤΟΣ
+## Program Description
 
-Το πρόγραμμα αποτελείτε από 5 αρχεία, 3 πηγαία και 2 επικεφαλίδας. Η βασική του λειτουργία είναι η εξής:
+The program consists of **five files**: three source files and two header files.  
+Its operation is structured into the following stages:
 
-1) Το υποπρόγραμμα "detacher" αρχικά διαβάζει ένα αρχείο IPL και βγάζει στην έξοδό του ένα αρχείο "out.txt" ίδιο
-με το αρχικό αλλά χωρίς σχόλια. Αν δεν έχει γίνει define το DEBUG στο τέλος της main το "out.txt" διαγράφεται.
+### 1. Detacher
+The `detacher` module reads an IPL source file and produces an intermediate file (`out.txt`)
+identical to the original but with all comments removed.
 
-2) Το υποπρόγραμμα "lexer" διαβάζει έναν έναν τους χαρακτήρες από το αρχείο out.txt και δημιουργεί Τokens ανάλογα
-με το είδος της λειτουργίας της κάθε λέξης. Τα Tokens δημιουργούν μία linked list. Ταυτόχρονα γίνεται ο λεκτικός
-έλεγχος καθώς και ένα μικρό μέρος του συντακτικού ελέγχου, που απαλλάσει το επόμενο πρόγραμμα κατά ένα μέρος από
-τη διαδικασία αυτή.
+If `DEBUG` is not defined, `out.txt` is deleted at the end of execution.
 
-3)Το υποπρόγραμμα "parser" είναι και το βασικό κομμάτι της εργασίας. Το μεγαλύτερο μέρος του, κάνει συντακτική
-ανάλυση και έλεγχο. Αρχικά ένα μικρό κομμάτι του μετράει το βάθος εμφώλευσης, στη συνέχεια υπάρχει ο "εγκέφαλος"
-του υποπρογράμματος που ρυθμίζει αν θα εκτελεστεί η κάθε εντολή και στο τέλος γίνεται η συντακτική ανάλυση
-και η εκτέλεση από τις εντολές που έχουν περάσει μέσα από τον "εγκέφαλο" του προγράμματος.
+---
 
-4)Ο έλεγχος επιστρέφει στη "main", όπου οι λίστες διαγράφονται και αν το DEBUG έχει γίνει define εκτυπώνονται επιπρόρθετα.
+### 2. Lexer
+The `lexer` module reads characters one by one from `out.txt` and generates **tokens**
+according to the type of each word and operation.
 
+- Tokens are stored in a **linked list**
+- Lexical analysis is performed
+- A limited part of the syntactic analysis is also performed, reducing the workload of the parser
 
-ΕΝΟΤΗΤΕΣ ΠΟΥ ΕΧΟΥΝ ΥΛΟΠΟΙΗΘΕΙ
+---
 
-1) ΒΑΣΙΚΗ ΛΕΥΤOYΡΓΙΑ ΔΙΕΡΜΗΝΕΑ IPL
-2) BREAK - CONTINUE ME ΔΥΝΑΤΟΤΗΤΑ ΧΡΗΣΗΣ ΑΡΙΘΜΟΥ ΚΑΙ ΑΝΤΙΣΤΟΙΧΟ ΠΡΟΓΡΑΜΜΑ IPL
-3) ΠΙΝΑΚΕΣ ΜΕ ΔΥΝΑΤΟΤΗΤΑ ΠΟΛΛΑΠΛΗΣ ΑΝΑΦΟΡΑΣ ΣΤΟΙΧΕΙΩΝ ΚΑΙ ΑΝΤΙΣΤΟΙΧΟ ΠΡΟΓΡΑΜΜΑ IPL
-4) ΕΡΓΑΣΙΑ 1 ΣΕ IPL (2 ΥΛΟΠΟΙΗΣΕΙΣ)
+### 3. Parser
+The `parser` module is the **core component** of the interpreter.
 
-ΕΚΦΩΝΗΣΗ ΠΡΟΓΡΑΜΜΑΤΟΣ ΜΕ BREAK ΚΑΙ CONTINUE (brkcont.ipl)
+Its responsibilities include:
+- Computing the nesting depth of program structures
+- Controlling whether each instruction should be executed (execution control logic)
+- Performing syntactic analysis
+- Executing instructions that pass the execution control phase
 
-Να υπολογισθεί το Ε.Κ.Π.(Ελάχιστο Κοινό Πολλαπλάσιο) δύο αριθμών ,οι οποίοι διαβάζονται από την είσοδο.Οι αριθμοί δεν πρέπει 
-να είναι αρνητικοί ή μηδέν.Αν ο χρήστης δώσει άκυρη τιμή(αρνητική ή μήδεν) ξαναδίνει έναν αριθμό.Ο υπολογισμός του Ε.Κ.Π. 
-θα γίνει όταν δωθούν δύο θετικοί αριθμοί.
+---
 
-ΕΚΦΩΝΗΣΗ ΠΡΟΓΡΑΜΜΑΤΟΣ ΜΕ ΠΙΝΑΚΕΣ ΜΕ ΔΥΝΑΤΟΤΗΤΑ ΠΟΛΛΑΠΛΗΣ ΑΝΑΦΟΡΑΣ ΣΤΟΙΧΕΙΩΝ (array.ipl)
+### 4. Main Program
+Control returns to `main`, where:
+- All dynamically allocated lists are freed
+- If `DEBUG` is defined, additional output is printed
 
-Να υπολογισθεί ποιός είναι ο βαθμός που πήραν οι περισσότεροι μαθήτες στο μάθημα της πληροφορικής.Το πλήθος τον μαθητών της 
-τάξης δίνεται σαν όρισμα από τη γραμμή εντολών ,έπειτα δίνεται ο βαθμός του κάθε μαθητή.Το πρόγραμμα εμφανίζει τους μάθητες που 
-πήραν αυτόν τον βαθμό και τον βαθμό.
-ΠΑΡΑΔΕΙΓΜΑ ΕΚΤΕΛΕΣΗΣ:
-$./ipli array.ipl 5
+---
+
+## Implemented Features
+
+1. **Basic IPL interpreter functionality**
+2. **`break` and `continue` statements**, including support for numeric arguments  
+   (with corresponding IPL programs)
+3. **Arrays** with support for **multiple references to elements**  
+   (with corresponding IPL programs)
+4. **Assignment 1 implemented in IPL** (two different implementations)
+
+---
+
+## Example Programs
+
+### Program using `break` and `continue` (`brkcont.ipl`)
+Computes the **Least Common Multiple (LCM)** of two numbers read from input.
+
+Constraints:
+- Numbers must be positive and non-zero
+- Invalid input (negative or zero) is rejected and re-entered
+- LCM computation starts only after two valid numbers are provided
+
+---
+
+### Program using arrays with multiple references (`array.ipl`)
+Determines the grade obtained by the **largest number of students** in a class.
+
+- The number of students is given as a command-line argument
+- Each student's grade is then read from input
+- The program outputs:
+  - The students who achieved the most common grade
+  - The grade itself
+
+#### Example execution
+```bash
+./ipli array.ipl 5
 16 17 20 19 19
 4 5 19
-
-
-ΔΙΕΥΚΡΙΝΗΣΕΙΣ ΣΧΕΤΙΚΑ ΜΕ ΤΗΝ ΛΕΙΤΟΥΡΓΙΑ ΤΟΥ ΠΡΟΓΡΑΜΜΑΤΟΣ
-
-	- Η αναφορά σε ονόματα πινάκων γίνεται αποκλειστικά με την μορφή var[n], ΧΩΡΙΣ κενό ή κάποιον χαρακτήρα ανάμεσα.
-	Δηλαδή η έκφραση var [n] θεωρείτε από το πρόγραμμα σαν δύο διαφορετικές μεταβλητες και επειδή η μεταβλητές δεν επιτρέπεται
-	να αρχίζουν με '[' βγάζει "Error!".
-
-	- Έχουν παραδωδεί δύο εργασίες kalmpr. H πρώτη "kalmpr.ipl" τρέχει πιο γρήγορα, ενω η δεύτερη "kalmpr2.ipl" τρέχει πιο αργά,
-	αλλά χρησιμοποιεί το else και πιο περίπλοκο κώδικα και αποτελεί ένα επιπλέον τεστ για τον interpreter.
